@@ -1,5 +1,0 @@
-# ninja log v5
-1	502	1683489325433866234	CMakeFiles/sorting-viz.dir/engine.cpp.o	396d5fe788f8243b
-1	425	1683488508277206183	CMakeFiles/sorting-viz.dir/main.cpp.o	e30bf9cf9b5220b8
-703	799	1683489429960532050	sorting-viz	935483941c7faa43
-1	703	1683489429857198718	CMakeFiles/sorting-viz.dir/polygon.cpp.o	f6e135a0ddd70558
