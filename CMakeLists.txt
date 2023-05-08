@@ -10,7 +10,7 @@ find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
 set(PROJECT_SOURCES
         main.cpp
         polygon.h polygon.cpp
-        engine.h engine.cpp
+        bars.h bars.cpp
 )
 add_executable(sorting-algs-visualisation  ${PROJECT_SOURCES})
 
