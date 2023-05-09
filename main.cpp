@@ -24,14 +24,15 @@ int main(int argc, char** argv) {
     po::store(parsed, vm);
     po::notify(vm);
 
-    Bars bars;
-    if (vm.count("count") || vm.count("c")) {
-        bars.setBarsAmount(vm["count"].as<int>());
-    }
-    if (vm.count("wait") || vm.count("w")) {
-        bars.setWaitTime(vm["wait"].as<int>());
-    }
+    
     if (vm.count("alg") || vm.count("a")) {
+        Bars bars;
+        if (vm.count("count") || vm.count("c")) {
+            bars.setBarsAmount(vm["count"].as<int>());
+        }
+        if (vm.count("wait") || vm.count("w")) {
+            bars.setWaitTime(vm["wait"].as<int>());
+        }
         bars.performSort(vm["alg"].as<std::string>());
     } else {
         std::cout << desc << std::endl;
