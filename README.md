@@ -19,6 +19,16 @@ Example:
 
 <code>./sorting-algs-visualisation -a quick -c 1000 -w 100 </code>
 
+## Available sorting algorithms
+- Bubble sort
+- Insertion sort
+- Selection sort
+- Merge sort
+- Quick sort
+- Stooge sort
+- Gnome sort
+- Bogo sort
+
 ## Dependencies
 - gcc
 - sfml
