@@ -3,7 +3,7 @@
 command-line tool to view sorting algorithms visualisation
 
 ## Usage
-<code>General options:  
+General options:  
 
   -h [ --help ]         Show help. 
 
@@ -12,8 +12,6 @@ command-line tool to view sorting algorithms visualisation
   -c [ --count ] arg    Amount of bars to be sorted. 
 
   -w [ --wait ] arg     Time to wait in microseconds after bar print. 
-
-</code>
 
 ## Dependencies
 - gcc
