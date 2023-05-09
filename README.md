@@ -17,8 +17,15 @@
 
 ## Installation
 
-<code>git clone https://github.com/Djivs/sorting-algs-visualisation.git
-cd sorting-algs-visualisation
-cmake .
-cmake --build .
-./sorting-algs-visualisation</code>
+<code>git clone https://github.com/Djivs/sorting-algs-visualisation.git  
+cd sorting-algs-visualisation  
+sh build.sh</code>  
+
+## Launch
+
+Example:
+
+<code>./sorting-algs-visualisation -a quick -c 1000 -w 100 </code>
+
+## Clean
+<code>sh clean.sh </code>
