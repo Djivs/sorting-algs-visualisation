@@ -1,5 +1,6 @@
 
 # sorting-algs-visualisation
+command-line tool to view sorting algorithms visualisation
 
 ## Usage
 <code>General options:
