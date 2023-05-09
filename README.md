@@ -3,7 +3,7 @@
 command-line tool to view sorting algorithms visualisation
 ## Preview video
 
-[![Video preview](img/preview.jpg)](https://www.youtube.com/watch?v=Bo4JWstlHe4)
+[![Video preview](img/preview.png)](https://www.youtube.com/watch?v=Bo4JWstlHe4)
 
 ## Usage
 ```
