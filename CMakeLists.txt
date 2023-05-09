@@ -6,10 +6,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
+find_package(Boost 1.81 COMPONENTS program_options REQUIRED)
+
+INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
 set(PROJECT_SOURCES
         main.cpp
-        polygon.h polygon.cpp
         bars.h bars.cpp
 )
 add_executable(sorting-algs-visualisation  ${PROJECT_SOURCES})
@@ -26,6 +28,6 @@ set_target_properties(sorting-algs-visualisation
         "${CMAKE_INSTALL_PREFIX}/lib"
   )
 
-target_link_libraries(sorting-algs-visualisation sfml-graphics sfml-audio)
+target_link_libraries(sorting-algs-visualisation sfml-graphics sfml-audio ${Boost_LIBRARIES})
 
 install(TARGETS sorting-algs-visualisation DESTINATION bin)

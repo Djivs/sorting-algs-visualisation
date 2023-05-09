@@ -1,3 +1,4 @@
+#include <SFML/System/Time.hpp>
 #include <random>
 #include <algorithm>
 #include <functional>
@@ -13,7 +14,7 @@ Bars::Bars() {
     sound->setBuffer(*buffer);
     sound->setVolume(100);
 
-    winWidth = 1000;
+    winWidth = 500;
     winHeight = 500;
     winStartingX = winStartingY = 0;
 
@@ -21,7 +22,8 @@ Bars::Bars() {
 
     win = new sf::RenderWindow(sf::VideoMode(winWidth, winHeight), winTitle);
 
-    barsAmount = 500;
+    barsAmount = 100;
+    waitTimeMc = 1;
 
     compareColor = sf::Color::Magenta;
     backColor = sf::Color::Black;
@@ -72,7 +74,22 @@ void Bars::performSort(SORT_TYPE sortType) {
     std::invoke(sortFunc, this);
 
     animateSortEnding();
+
+    while (win->isOpen()) {
+        sf::Event event;
+        while (win->pollEvent(event)) {
+            if (event.type == sf::Event::Closed) {
+                win->close();
+                exit(0);
+            }
+        }
+    }
 }
+
+void Bars::performSort(std::string sortType) {
+    performSort(getSortTypeFromString(sortType));
+}
+
 
 void Bars::bubbleSort() {
     for (int i = 0; i < barsAmount - 1; ++i) {
@@ -142,7 +159,7 @@ void Bars::animateSortEnding() {
         highlightBar(i, finalColor);
         paintBars();
         playSound(i);
-        sf::sleep(sf::milliseconds(1));
+        sf::sleep(sf::microseconds(static_cast<float>(waitTimeMc)));
     } 
 }
 
@@ -169,6 +186,7 @@ int Bars::performOperation(OPERATION_TYPE operationType, int firstValue, int sec
     }
 
     playSound(soundValue);
+    sf::sleep(sf::microseconds(waitTimeMc));
     return std::invoke(operationFunc, this, firstValue, secondValue);
 }
 
@@ -249,14 +267,14 @@ void Bars::highlightBar(int index, sf::Color color) {
 void Bars::fillBarsRectangles() {
     barsRectangles.clear();
 
-    const int rectWidth = (static_cast<float>(winWidth)) / static_cast<float>(barsValues.size());
+    const float rectWidth = (static_cast<float>(winWidth)) / static_cast<float>(barsValues.size());
 
     for (int i = 0; i < barsValues.size(); ++i) {
         sf::RectangleShape rect;
 
-        const int rectHeight = (static_cast<float>(winHeight) * 0.9)/static_cast<float>(barsValues.size())*static_cast<float>(barsValues[i]);
-        const int rectX = winStartingX + i * rectWidth;
-        const int rectY = winStartingY + (winHeight - rectHeight);
+        const float rectHeight = (static_cast<float>(winHeight) * 0.9)/static_cast<float>(barsValues.size())*static_cast<float>(barsValues[i]);
+        const float rectX = winStartingX + i * rectWidth;
+        const float rectY = winStartingY + (winHeight - rectHeight);
 
         rect.setSize(sf::Vector2f(rectWidth, rectHeight));
         rect.setPosition(sf::Vector2f(rectX, rectY));
@@ -432,4 +450,21 @@ int Bars::quickSortPartition(int start, int end) {
     }
  
     return pivotIndex;
+}
+
+SORT_TYPE Bars::getSortTypeFromString(std::string str) {
+    static std::map <std::string, SORT_TYPE> sortTypeToStringMap{
+      {"bubble", BUBBLE},
+      {"sinking", BUBBLE},
+      {"insertion", INSERTION},
+      {"selection", SELECTION},
+      {"stooge", STOOGE},
+      {"gnome", GNOME},
+      {"bogo", BOGO},
+      {"permutation", BOGO},
+      {"quick", QUICK},
+      {"merge", MERGE}
+    };
+
+    return sortTypeToStringMap[str];
 }

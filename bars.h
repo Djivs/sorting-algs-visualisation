@@ -2,6 +2,7 @@
 #define BARS_H
 
 #include <vector>
+#include <string>
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -17,7 +18,10 @@ public:
     ~Bars();
 
     void performSort(SORT_TYPE sortType);
+    void performSort(std::string sortType);
 
+    void setBarsAmount(int newAmount) {barsAmount = newAmount;}
+    void setWaitTime(int newWaitTime) {waitTimeMc = newWaitTime;}
     void setBarsValues(const vector <int> &newBarsValues);
 private:
     void bubbleSort();
@@ -44,6 +48,7 @@ private:
 
     vector <int> getRange(int startingNumber, int endingNumber);
     vector <int> getRandomShuffledRange(int startingNumber, int endingNumber);
+    SORT_TYPE getSortTypeFromString(std::string str);
 
     inline void playSound(int value);
     void processWinClosing();
@@ -68,6 +73,7 @@ private:
     std::string winTitle;
 
     short barsAmount;
+    int waitTimeMc;
 
     short winWidth, winHeight;
     short winStartingX, winStartingY;
