@@ -45,6 +45,7 @@ private:
     void highlightBar(int index, sf::Color color);
     void fillBarsRectangles();
     void paintBars();
+    void paintBar(int index);
 
     vector <int> getRange(int startingNumber, int endingNumber);
     vector <int> getRandomShuffledRange(int startingNumber, int endingNumber);

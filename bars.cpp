@@ -14,7 +14,7 @@ Bars::Bars() {
     sound->setBuffer(*buffer);
     sound->setVolume(100);
 
-    winWidth = 500;
+    winWidth = 1000;
     winHeight = 500;
     winStartingX = winStartingY = 0;
 
@@ -43,6 +43,7 @@ Bars::~Bars() {
 
 void Bars::performSort(SORT_TYPE sortType) {
     setBarsValues(getRandomShuffledRange(1, barsAmount));
+    paintBars();
 
     void (Bars::*sortFunc)();
     switch(sortType) {
@@ -157,7 +158,7 @@ inline void Bars::bogoSort() {
 void Bars::animateSortEnding() {
     for (int i = 0; i < barsAmount; ++i) {
         highlightBar(i, finalColor);
-        paintBars();
+        paintBar(i);
         playSound(i);
         sf::sleep(sf::microseconds(static_cast<float>(waitTimeMc)));
     } 
@@ -166,20 +167,29 @@ void Bars::animateSortEnding() {
 int Bars::performOperation(OPERATION_TYPE operationType, int firstValue, int secondValue) {
     int (Bars::*operationFunc)(int, int);
     int soundValue;
+
+    for (auto &i : lastChangedBars) {
+        paintBar(i);
+    }
+
     switch(operationType) {
     case COMPARE:
+        lastChangedBars = {firstValue, secondValue};
         soundValue = barsValues[secondValue];
         operationFunc = &Bars::compare;
         break;
     case COMPARE_TO_VALUE:
+        lastChangedBars = {firstValue};
         soundValue = barsValues[firstValue];
         operationFunc = &Bars::compareToValue;
         break;
     case UPDATE:
-        soundValue = barsValues[secondValue];
+        lastChangedBars = {firstValue};
+        soundValue = barsValues[firstValue];
         operationFunc = &Bars::update;
         break;
     case SWAP:
+        lastChangedBars = {firstValue, secondValue};
         soundValue = barsValues[secondValue];
         operationFunc = &Bars::swap;
         break;
@@ -198,7 +208,7 @@ int Bars::compare(int firstIndex, int secondIndex) {
 
     highlightBar(firstIndex, compareColor);
     highlightBar(secondIndex, compareColor);
-    paintBars();
+    paintBar(firstIndex); paintBar(secondIndex);
     highlightBar(firstIndex, defaultColor);
     highlightBar(secondIndex, defaultColor);
 
@@ -213,7 +223,7 @@ int Bars::compare(int firstIndex, int secondIndex) {
 
 int Bars::compareToValue(int index, int value) {
     highlightBar(index, compareColor);
-    paintBars();
+    paintBar(index);
     highlightBar(index, defaultColor);
 
     if (barsValues[index] > value) {
@@ -238,7 +248,7 @@ int Bars::swap(int firstIndex, int secondIndex) {
 
     highlightBar(firstIndex, compareColor);
     highlightBar(secondIndex, compareColor);
-    paintBars();
+    paintBar(firstIndex); paintBar(secondIndex);
     highlightBar(firstIndex, defaultColor);
     highlightBar(secondIndex,defaultColor);
     return 1;
@@ -253,7 +263,7 @@ int Bars::update(int index, int value) {
     barsRectangles[index].setPosition(barsRectangles[index].getPosition().x, winHeight - barsRectangles[index].getSize().y);
 
     highlightBar(index, updateColor);
-    paintBars();
+    paintBar(index);
     highlightBar(index, defaultColor);
 
     return 1;
@@ -290,6 +300,23 @@ void Bars::paintBars() {
         win->draw(rect);
     }
     win->display();
+}
+
+void Bars::paintBar(int index) {
+    //draw over old rect
+    sf::RectangleShape rect = barsRectangles[index];
+    sf::Vector2f rectSize = rect.getSize();
+    rect.setPosition(sf::Vector2f(rect.getPosition().x, 0));
+    rect.setSize(sf::Vector2f(rectSize.x, winHeight));
+    rect.setFillColor(backColor);
+    win->draw(rect);
+
+    //draw new rect
+    win->draw(barsRectangles[index]);
+
+    win->display();
+
+
 }
 
 vector <int> Bars::getRange(int startingNumber, int endingNumber) {
