@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(SFML 2.5 COMPONENTS system window graphics audio REQUIRED)
-find_package(Boost 1.81 COMPONENTS program_options REQUIRED)
+find_package(Boost 1.74 COMPONENTS program_options REQUIRED)
 
 INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
 
