@@ -5,6 +5,7 @@
 - gcc
 - sfml
 - cmake
+- boost
 
 ## Installation
 
