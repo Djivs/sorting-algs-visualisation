@@ -6,7 +6,7 @@
   -h [ --help ]         Show help
   -a [ --alg ] arg      Sorting algorithm to perform
   -c [ --count ] arg    Amount of bars to be sorted
-  -w [ --wait ] arg     Time to wait in microseconds after each operation
+  -w [ --wait ] arg     Time to wait in microseconds after bar print
 </code>
 
 ## Dependencies
