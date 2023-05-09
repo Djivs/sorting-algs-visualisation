@@ -17,7 +17,7 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: install sfml
-      run: sudo apt-get install sfml 
+      run: sudo apt-get install libsfml-dev 
 
   build:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
