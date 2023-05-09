@@ -3,6 +3,7 @@
 command-line tool to view sorting algorithms visualisation
 
 ## Usage
+```
 General options:  
 
   -h [ --help ]         Show help. 
@@ -11,7 +12,12 @@ General options:
 
   -c [ --count ] arg    Amount of bars to be sorted. 
 
-  -w [ --wait ] arg     Time to wait in microseconds after bar print. 
+  -w [ --wait ] arg     Time to wait in microseconds after bar print.
+```
+  
+Example:
+
+<code>./sorting-algs-visualisation -a quick -c 1000 -w 100 </code>
 
 ## Dependencies
 - gcc
@@ -25,11 +31,5 @@ General options:
 cd sorting-algs-visualisation  
 sh build.sh</code>  
 
-## Launch
-
-Example:
-
-<code>./sorting-algs-visualisation -a quick -c 1000 -w 100 </code>
-
-## Clean
+## Clean build
 <code>sh clean.sh </code>
