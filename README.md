@@ -2,6 +2,8 @@
 # sorting-algs-visualisation
 command-line tool to view sorting algorithms visualisation
 
+![](https://github.com/Djivs/sorting-algs-visualisation/blob/master/img/preview.gif)
+
 ## Usage
 ```
 General options:  
