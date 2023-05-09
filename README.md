@@ -2,7 +2,7 @@
 # sorting-algs-visualisation
 command-line tool to view sorting algorithms visualisation
 
-![](https://github.com/Djivs/sorting-algs-visualisation/blob/master/img/preview.gif)
+    [![Video preview](https://img.youtube.com/vi/Bo4JWstlHe4/0.jpg)](https://www.youtube.com/watch?v=Bo4JWstlHe4)
 
 ## Usage
 ```
