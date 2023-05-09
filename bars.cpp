@@ -157,8 +157,7 @@ inline void Bars::bogoSort() {
 
 void Bars::animateSortEnding() {
     for (int i = 0; i < barsAmount; ++i) {
-        highlightBar(i, finalColor);
-        paintBar(i);
+        paintBar(i, finalColor);
         playSound(i);
         sf::sleep(sf::microseconds(static_cast<float>(waitTimeMc)));
     } 
@@ -168,9 +167,7 @@ int Bars::performOperation(OPERATION_TYPE operationType, int firstValue, int sec
     int (Bars::*operationFunc)(int, int);
     int soundValue;
 
-    for (auto &i : lastChangedBars) {
-        paintBar(i);
-    }
+    paintBars(lastChangedBars, defaultColor);
 
     switch(operationType) {
     case COMPARE:
@@ -196,7 +193,6 @@ int Bars::performOperation(OPERATION_TYPE operationType, int firstValue, int sec
     }
 
     playSound(soundValue);
-    sf::sleep(sf::microseconds(waitTimeMc));
     return std::invoke(operationFunc, this, firstValue, secondValue);
 }
 
@@ -204,13 +200,7 @@ int Bars::compare(int firstIndex, int secondIndex) {
     const int firstNumber = barsValues[firstIndex];
     const int secondNumber = barsValues[secondIndex];
 
-
-
-    highlightBar(firstIndex, compareColor);
-    highlightBar(secondIndex, compareColor);
-    paintBar(firstIndex); paintBar(secondIndex);
-    highlightBar(firstIndex, defaultColor);
-    highlightBar(secondIndex, defaultColor);
+    paintBars({firstIndex, secondIndex}, compareColor);
 
     if (firstNumber > secondNumber) {
         return 1;
@@ -222,9 +212,7 @@ int Bars::compare(int firstIndex, int secondIndex) {
 }
 
 int Bars::compareToValue(int index, int value) {
-    highlightBar(index, compareColor);
-    paintBar(index);
-    highlightBar(index, defaultColor);
+    paintBar(index, compareColor);
 
     if (barsValues[index] > value) {
         return 1;
@@ -245,12 +233,7 @@ int Bars::swap(int firstIndex, int secondIndex) {
     barsRectangles[firstIndex].setPosition(barsRectangles[firstIndex].getPosition().x, winHeight - barsRectangles[firstIndex].getSize().y);
     barsRectangles[secondIndex].setPosition(barsRectangles[secondIndex].getPosition().x, winHeight - barsRectangles[secondIndex].getSize().y);
 
-
-    highlightBar(firstIndex, compareColor);
-    highlightBar(secondIndex, compareColor);
-    paintBar(firstIndex); paintBar(secondIndex);
-    highlightBar(firstIndex, defaultColor);
-    highlightBar(secondIndex,defaultColor);
+    paintBars({firstIndex, secondIndex}, compareColor);
     return 1;
 }
 
@@ -262,9 +245,7 @@ int Bars::update(int index, int value) {
     barsRectangles[index].setSize(sf::Vector2f(barsRectangles[index].getSize().x, rectHeight));
     barsRectangles[index].setPosition(barsRectangles[index].getPosition().x, winHeight - barsRectangles[index].getSize().y);
 
-    highlightBar(index, updateColor);
-    paintBar(index);
-    highlightBar(index, defaultColor);
+    paintBar(index, updateColor);
 
     return 1;
 }
@@ -302,8 +283,9 @@ void Bars::paintBars() {
     win->display();
 }
 
-void Bars::paintBar(int index) {
+void Bars::paintBar(int index, sf::Color color) {
     //draw over old rect
+    highlightBar(index, color);
     sf::RectangleShape rect = barsRectangles[index];
     sf::Vector2f rectSize = rect.getSize();
     rect.setPosition(sf::Vector2f(rect.getPosition().x, 0));
@@ -316,7 +298,36 @@ void Bars::paintBar(int index) {
 
     win->display();
 
+    highlightBar(index, defaultColor);
 
+    sf::sleep(sf::microseconds(waitTimeMc));
+
+
+}
+
+void Bars::paintBars(vector <int> indexes, sf::Color color) {
+    for (auto &index: indexes) {
+        highlightBar(index, color);
+    }
+    for (auto &index : indexes) {
+        sf::RectangleShape rect = barsRectangles[index];
+        rect.setPosition(sf::Vector2f(rect.getPosition().x, 0));
+        rect.setSize(sf::Vector2f(rect.getSize().x, winHeight));
+        rect.setFillColor(backColor);
+        win->draw(rect);
+    }
+
+    for (auto &index : indexes) {
+        win->draw(barsRectangles[index]);
+    }
+
+    win->display();
+
+    for (auto &index : indexes) {
+        highlightBar(index, defaultColor);
+    }
+
+    sf::sleep(sf::microseconds(waitTimeMc));
 }
 
 vector <int> Bars::getRange(int startingNumber, int endingNumber) {
@@ -408,14 +419,21 @@ void Bars::merge(int start, int mid, int end) {
     vector <int> rightSubVec(rightSubVecSize);
 
     for (int i = 0; i < leftSubVecSize; ++i) {
+        paintBar(start + i, updateColor);
         leftSubVec[i] = barsValues[start + i];
     }
     for (int i = 0; i < rightSubVecSize; ++i) {
+        paintBar(mid + 1 + i, updateColor);
         rightSubVec[i] = barsValues[mid + 1 + i];
     }
 
     int leftIndex = 0, rightIndex = 0, mergedIndex = start;
     while (leftIndex < leftSubVecSize && rightIndex < rightSubVecSize) {
+        paintBar(mid + 1 + rightIndex, updateColor);
+        // highlightBar(start + leftIndex, updateColor);
+        // paintBar(start + leftIndex);
+        // highlightBar(start + leftIndex, defaultColor);
+
         if (leftSubVec[leftIndex] <= rightSubVec[rightIndex]) {
             performOperation(UPDATE, mergedIndex, leftSubVec[leftIndex]);
             leftIndex++;
@@ -482,19 +500,6 @@ int Bars::quickSortPartition(int start, int end) {
     return pivotIndex;
 }
 
-SORT_TYPE Bars::getSortTypeFromString(std::string str) {
-    static std::map <std::string, SORT_TYPE> sortTypeToStringMap{
-      {"bubble", BUBBLE},
-      {"sinking", BUBBLE},
-      {"insertion", INSERTION},
-      {"selection", SELECTION},
-      {"stooge", STOOGE},
-      {"gnome", GNOME},
-      {"bogo", BOGO},
-      {"permutation", BOGO},
-      {"quick", QUICK},
-      {"merge", MERGE}
-    };
-
+inline SORT_TYPE Bars::getSortTypeFromString(std::string str) {
     return sortTypeToStringMap[str];
 }
