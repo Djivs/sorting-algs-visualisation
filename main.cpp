@@ -15,9 +15,9 @@ int main(int argc, char** argv) {
     int waitTime = 10;
     
     desc.add_options()  ("help,h", "Show help")
-                        ("alg", po::value<std::string>(&sortType), "Sorting algorithm to perform")
-                        ("amount", po::value<int>(&barsAmount), "Amount of bars to be sorted")
-                        ("wait", po::value<int>(&waitTime), "Time to wait in microseconds after each operation");
+                        ("alg,a", po::value<std::string>(&sortType), "Sorting algorithm to perform")
+                        ("count,c", po::value<int>(&barsAmount), "Amount of bars to be sorted")
+                        ("wait,w", po::value<int>(&waitTime), "Time to wait in microseconds after each operation");
     
     po::variables_map vm;
     po::parsed_options parsed = po::command_line_parser(argc, argv).options(desc).allow_unregistered().run();
@@ -25,13 +25,13 @@ int main(int argc, char** argv) {
     po::notify(vm);
 
     Bars bars;
-    if (vm.count("amount")) {
-        bars.setBarsAmount(vm["amount"].as<int>());
+    if (vm.count("count") || vm.count("c")) {
+        bars.setBarsAmount(vm["count"].as<int>());
     }
-    if (vm.count("wait")) {
+    if (vm.count("wait") || vm.count("w")) {
         bars.setWaitTime(vm["wait"].as<int>());
     }
-    if (vm.count("alg")) {
+    if (vm.count("alg") || vm.count("a")) {
         bars.performSort(vm["alg"].as<std::string>());
     } else {
         std::cout << desc << std::endl;

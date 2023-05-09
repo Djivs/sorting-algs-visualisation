@@ -52,7 +52,7 @@ private:
     SORT_TYPE getSortTypeFromString(std::string str);
 
     inline void playSound(int value);
-    void processWinClosing();
+    void processWinOperations();
 
     void quickSort(int start, int end);
     void stoogeSort(int start, int end);

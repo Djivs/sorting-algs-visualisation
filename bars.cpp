@@ -271,7 +271,7 @@ int Bars::update(int index, int value) {
 
 void Bars::highlightBar(int index, sf::Color color) {
     barsRectangles[index].setFillColor(color);
-    processWinClosing();
+    processWinOperations();
 }
 
 void Bars::fillBarsRectangles() {
@@ -349,13 +349,16 @@ inline void Bars::playSound(int value) {
     sound->play();
 }
 
-void Bars::processWinClosing() {
+void Bars::processWinOperations() {
     sf::Event event;
     while (win->pollEvent(event))
     {
         if (event.type == sf::Event::Closed) {
             win->close();
             exit(0);
+        }
+        if (event.type == sf::Event::Resized) {
+            paintBars();
         }
     }
 }
