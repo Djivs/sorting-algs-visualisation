@@ -19,7 +19,7 @@ Example:
 
 <code>./sorting-algs-visualisation -a quick -c 1000 -w 100 </code>
 
-## Available sorting algorithms
+## Available algorithms
 - Bubble sort
 - Insertion sort
 - Selection sort
