@@ -39,10 +39,11 @@ Example:
 - boost
 
 ## Installation
-
-<code>git clone https://github.com/Djivs/sorting-algs-visualisation.git  
+```
+git clone https://github.com/Djivs/sorting-algs-visualisation.git  
 cd sorting-algs-visualisation  
-sh build.sh</code>  
+sh build.sh
+```
 
 ## Clean build
 <code>sh clean.sh </code>
